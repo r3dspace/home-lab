@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+
+  duplicati:
+    image: lscr.io/linuxserver/duplicati
+    container_name: duplicati
+    restart: unless-stopped
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Berlin
+    volumes:
+      - data:/config
+      - /var/backups:/backups
+      - /:/source
+    ports:
+      - 8200:8200
+
+volumes:
+  data:
