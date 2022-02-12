@@ -1,7 +1,8 @@
 # Home-Lab
 
-This is a repo for fun and usefull templates and tools which you can use in your home-lab.
-
+This is a repo for fun and usefull templates and tools which you can use in your home-lab. You can find the following items in this repo:
+- 🐳 [docker-compose](https://github.com/R3dSpace/home-lab/tree/main/docker-compose) files
+- 📜 [scripts](https://github.com/R3dSpace/home-lab/tree/main/scripts) files
 
 ### ⚠️ Warning
 
