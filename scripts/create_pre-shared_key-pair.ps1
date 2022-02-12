@@ -14,7 +14,7 @@ if (Test-Path -Path $folder) {
     Write-Host "Creating .ssh folder in user profile..."
     New-Item -Path $env:USERPROFILE -Name ".ssh" -ItemType "directory"
     if (Test-Path -Path $folder) {
-        Write-Host "Successfully created directory .sssh!" -ForegroundColor Green
+        Write-Host "Successfully created directory .ssh!" -ForegroundColor Green
     } else {
         Write-Host "Unable to create directory .ssh!" -ForegroundColor Red
         exit
