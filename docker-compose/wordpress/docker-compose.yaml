@@ -15,6 +15,17 @@ services:
       MYSQL_USER: $db-user
       MYSQL_PASSWORD: $db-user-pw
   
+  redis:
+    image: redis:latest
+    container_name: wordpress_cache
+    restart: unless-stopped
+    networks:
+      - backend
+    volumes:
+      - data_cache:/var/lib/redis
+    environment:
+      TZ: CET
+
   wordpress:
     image: wordpress:latest
     container_name: wordpress_app
