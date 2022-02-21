@@ -36,7 +36,7 @@ services:
       - frontend
       - backend
     ports:
-      - 80:80
+      - 8080:80
     volumes:
       - data_app:/var/www/html
     environment:
@@ -51,4 +51,5 @@ networks:
 
 volumes:
   data_db:
+  data_cache:
   data_app:
