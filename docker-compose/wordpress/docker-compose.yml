@@ -1,23 +1,23 @@
-version: "3.9"
+version: '3.9'
 
 services:
   mariadb:
-    image: mariadb:10.6
-    container_name: wordpress_db
+    image: mariadb:latest
+    container_name: wordpress_db_$NAME
     restart: unless-stopped
     networks:
       - backend
     volumes:
       - data_db:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: $db-root-pw
-      MYSQL_DATABASE: $db-name
-      MYSQL_USER: $db-user
-      MYSQL_PASSWORD: $db-user-pw
-  
+      MYSQL_ROOT_PASSWORD: $DB-ROOT-PW
+      MYSQL_DATABASE: $DB-NAME
+      MYSQL_USER: $DB-USER
+      MYSQL_PASSWORD: $DB-USER-PW
+
   redis:
     image: redis:latest
-    container_name: wordpress_cache
+    container_name: wordpress_cache_$NAME
     restart: unless-stopped
     networks:
       - backend
@@ -28,7 +28,7 @@ services:
 
   wordpress:
     image: wordpress:latest
-    container_name: wordpress_app
+    container_name: wordpress_app_$NAME
     restart: unless-stopped
     depends_on:
       - mariadb
@@ -36,17 +36,18 @@ services:
       - frontend
       - backend
     ports:
-      - 8080:80
+      - 127.0.0.1:8080:80
     volumes:
       - data_app:/var/www/html
     environment:
       WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: $db-user
-      WORDPRESS_DB_PASSWORD: $db-user-pw
-      WORDPRESS_DB_NAME: $db-name
+      WORDPRESS_DB_USER: $DB-USER
+      WORDPRESS_DB_PASSWORD: $DB-USER-PW
+      WORDPRESS_DB_NAME: $DB-NAME
 
 networks:
   frontend:
+    external: true
   backend:
 
 volumes:

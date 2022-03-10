@@ -11,11 +11,11 @@ services:
       - PGID=0
       - TZ=Europe/Berlin
     volumes:
-      - data:/config
+      - data_app:/config
       - /var/backups:/backups
       - /:/source
     ports:
       - 8200:8200
 
 volumes:
-  data:
+  data_app:
