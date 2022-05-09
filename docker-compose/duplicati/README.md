@@ -3,7 +3,7 @@
 
 ## ⌨️ Setup
 Before running the docker-compose file please do the following step below.
-1. In the /var directory reate a folder called "backups". Run the command to accomplish this:
+1. In the /var directory create a folder called "backups". Run the command to accomplish this:
 ```bash
 mkdir /var/backups
 ```
