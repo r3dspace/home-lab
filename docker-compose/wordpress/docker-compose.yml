@@ -1,5 +1,15 @@
 version: '3.9'
 
+networks:
+  frontend:
+    external: true
+  backend:
+
+volumes:
+  mariadb_data:
+  redis_data:
+  wordpress_data:
+
 services:
   mariadb:
     image: mariadb:latest
@@ -8,12 +18,12 @@ services:
     networks:
       - backend
     volumes:
-      - data_db:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: $DB-ROOT-PW
-      MYSQL_DATABASE: $DB-NAME
-      MYSQL_USER: $DB-USER
-      MYSQL_PASSWORD: $DB-USER-PW
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PW}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_USER_PW}
 
   redis:
     image: redis:latest
@@ -22,7 +32,7 @@ services:
     networks:
       - backend
     volumes:
-      - data_cache:/var/lib/redis
+      - redis_data:/var/lib/redis
     environment:
       TZ: CET
 
@@ -38,19 +48,9 @@ services:
     ports:
       - 127.0.0.1:8080:80
     volumes:
-      - data_app:/var/www/html
+      - wordpress_data:/var/www/html
     environment:
       WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: $DB-USER
-      WORDPRESS_DB_PASSWORD: $DB-USER-PW
-      WORDPRESS_DB_NAME: $DB-NAME
-
-networks:
-  frontend:
-    external: true
-  backend:
-
-volumes:
-  data_db:
-  data_cache:
-  data_app:
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_USER_PW}
+      WORDPRESS_DB_NAME: ${DB_NAME}

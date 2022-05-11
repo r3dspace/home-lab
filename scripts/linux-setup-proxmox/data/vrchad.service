@@ -1,0 +1,14 @@
+[Unit]
+Description=VRChad bot service
+After=network-online.target
+
+[Service]
+WorkingDirectory=/srv/app/vrchad
+ExecStart=./VRChad
+User=dcbot
+Type=simple
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

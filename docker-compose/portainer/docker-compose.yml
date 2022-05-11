@@ -1,5 +1,8 @@
 version: '3.9'
 
+volumes:
+  portainer_data:
+
 services:
   portainer:
     image: portainer/portainer-ce:latest
@@ -8,11 +11,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - data_app:/data
+      - portainer_data:/data
     ports:
       - 9000:9000
       - 9443:9443
       - 8000:8000
-
-volumes:
-  data_app:

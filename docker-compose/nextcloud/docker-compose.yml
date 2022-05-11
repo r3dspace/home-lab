@@ -1,21 +1,30 @@
 version: '3.9'
 
+networks:
+  frontend:
+  backend:
+
+volumes:
+  nextcloud_data:
+  mariadb_data:
+  redis_data:
+
 services:
   mariadb:
     image: mariadb:10.6
     container_name: nextcloud_db_$NAME
     volumes:
-      - data_db:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     networks:
       - backend
     restart: unless-stopped
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW --innodb-file-per-table=1 --skip-innodb-read-only-compressed
     environment:
       TZ: CET
-      MYSQL_ROOT_PASSWORD: $DB-ROOT-PW
-      MYSQL_DATABASE: $DB-NAME
-      MYSQL_USER: $DB-USER
-      MYSQL_PASSWORD: $DB-USER-PW
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PW}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_USER_PW}
 
   redis:
     image: redis:latest
@@ -27,7 +36,7 @@ services:
     networks:
       - backend
     volumes:
-      - data_cache:/var/lib/redis
+      - redis_data:/var/lib/redis
 
   nextcloud:
     depends_on:
@@ -38,7 +47,7 @@ services:
     restart: unless-stopped
     hostname: $HOSTNAME
     volumes:
-      - data_app:/var/www/html
+      - nextcloud_data:/var/www/html
       - ./php.ini:/usr/local/etc/php/conf.d/zzz-custom.ini
     ports:
       - 127.0.0.1:8081:80
@@ -48,28 +57,19 @@ services:
     environment:
       TZ: CET
       VIRTUAL_HOST: $HOSTNAME
-      SMTP_HOST: $SMTP-HOST
+      SMTP_HOST: ${SMTP_HOST}
       SMTP_SECURE: SSL
       SMTP_PORT: 465
       SMTP_AUTHTYPE: LOGIN
-      SMTP_NAME: $SMTP-USER
-      SMTP_PASSWORD: $SMTP-USER-PW
-      MAIL_FROM_ADDRESS: $MAIL-FROM
-      MAIL_DOMAIN: $MAIL-DOMAIN
+      SMTP_NAME: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_USER_PW}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM}
+      MAIL_DOMAIN: ${MAIL_DOMAIN}
       MYSQL_HOST: mariadb
-      MYSQL_DATABASE: $DB-NAME
-      MYSQL_USER: $DB-USER
-      MYSQL_PASSWORD: $DB-USER-PW
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_USER_PW}
       REDIS_HOST: redis
-      REDIS_HOST_PASSWORD: $REDIS-PW
-      NEXTCLOUD_TRUSTED_DOMAINS: $HOSTNAME
-      TRUSTED_PROXIES: $TRUSTED-PROXIES
-
-networks:
-  frontend:
-  backend:
-
-volumes:
-  data_app:
-  data_db:
-  data_cache:
+      REDIS_HOST_PASSWORD: ${REDIS_PW}
+      NEXTCLOUD_TRUSTED_DOMAINS: ${HOSTNAME}
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES}

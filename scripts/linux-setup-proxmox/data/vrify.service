@@ -1,0 +1,14 @@
+[Unit]
+Description=VRify bot service
+After=network-online.target
+
+[Service]
+WorkingDirectory=/srv/app/vrify
+ExecStart=/bin/java -Xms32m -Xmx512m -jar VRify.jar
+User=dcbot
+Type=simple
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
