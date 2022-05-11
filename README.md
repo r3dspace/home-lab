@@ -1,8 +1,8 @@
 # Home-Lab
 
 This is a repo for fun and usefull templates and tools which you can use in your home-lab. You can find the following items in this repo:
-- 🐳 [docker-compose](https://github.com/R3dSpace/home-lab/tree/main/docker-compose) files
-- 📜 [scripts](https://github.com/R3dSpace/home-lab/tree/main/scripts) files
+- 🐳 [docker-compose](https://github.com/R3dSpace/home-lab/tree/main/docker-compose)
+- 📜 [scripts](https://github.com/R3dSpace/home-lab/tree/main/scripts)
 
 ### ⚠️ Warning
 
@@ -10,4 +10,4 @@ Please beware that products can change over time. I do my best to keep up with t
 
 
 ### 🤝 Contribution and Support
-If you’d like to contribute to this project, reach out to me on social media or [Discord](https://discord.psychokings.com), or create a pull request for the necessary changes. 
+If you’d like to contribute to this project, reach out to me on social media or [Discord](https://discord.spicydragon.net), or create a pull request for the necessary changes. 
