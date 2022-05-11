@@ -1,4 +1,4 @@
-# SpicyDragon cron file
+# Cron file
 MAILTO="alert@example.com"
 SHELL=/bin/bash
 HOME=/

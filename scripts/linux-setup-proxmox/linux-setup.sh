@@ -4,16 +4,15 @@
 timedatectl set-timezone 'Europe/Berlin'
 
 # Direcoty setup
-mkdir -p {
-    /etc/scripts
-    /srv/docker,
-    /srv/docker/watchtower,
-    /srv/docker/prometheus,
-    /srv/app,
-    /srv/app/vrify,
-    /srv/app/vrchad,
-    /srv/app/spacestation
-}
+mkdir -p \
+    /etc/scripts \
+    /srv/docker \
+    /srv/docker/watchtower \
+    /srv/docker/prometheus \
+    /srv/app \
+    /srv/app/vrify \
+    /srv/app/vrchad \
+    /srv/app/spacestation \
 
 # Install VirtIO Linux
 apt-get install -y qemu-guest-agent
@@ -60,8 +59,10 @@ cp ./data/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 # cp ./data/cron <dir to cron root>
 
 # Must shutdown after run. NO restart!
+echo ""
 echo "============================================================="
 echo "You must run the following command after starting the host:"
 echo "systemctl start qemu-guest-agent"
 echo "============================================================="
-shutdown 5m
+echo ""
+sudo shutdown 5
