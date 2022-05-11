@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set color
+Yellow='\033[0;33m'
+
 # Timezone
 timedatectl set-timezone 'Europe/Berlin'
 
@@ -7,12 +10,9 @@ timedatectl set-timezone 'Europe/Berlin'
 mkdir -p \
     /etc/scripts \
     /srv/docker \
-    /srv/docker/watchtower \
-    /srv/docker/prometheus \
     /srv/app \
-    /srv/app/vrify \
-    /srv/app/vrchad \
-    /srv/app/spacestation \
+    /srv/config/prometheus \
+    /srv/config/templates \
 
 # Install VirtIO Linux
 apt-get install -y qemu-guest-agent
@@ -43,7 +43,8 @@ apt install -y \
     docker-ce \
     docker-ce-cli \
     containerd.io \
-    docker-compose-plugin
+    docker-compose-plugin \
+    docker-compose
 
 # Enable services
 systemctl enable unattended-upgrades
@@ -52,14 +53,18 @@ systemctl enable docker
 systemctl start docker
 
 # Change unintended upgrades
-cp ./data/50unattended-upgrades /etc/apt/apt.conf.d/50unattended-upgrades
-cp ./data/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
+cp ./data/50unattended-upgrades /etc/apt/apt.conf.d/
+cp ./data/20auto-upgrades /etc/apt/apt.conf.d/
+
+# Template copy
+cp ./data/binarie.service /srv/config/templates/
+cp ./data/java-archive.service /srv/config/templates/
 
 # Cronjob setup
 # cp ./data/cron <dir to cron root>
 
 # Must shutdown after run. NO restart!
-echo ""
+echo "${Yellow}"
 echo "============================================================="
 echo "You must run the following command after starting the host:"
 echo "systemctl start qemu-guest-agent"
