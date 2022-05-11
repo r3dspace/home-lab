@@ -1,0 +1,102 @@
+version: '3.9'
+
+networks:
+  monitor-net:
+    driver: bridge
+
+volumes:
+  grafana_data: {}
+  prometheus_data: {}
+  influxdb2_data: {}
+
+services:
+  grafana:
+    image: grafana/grafana:main
+    container_name: grafana
+    restart: unless-stopped
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - 3000:3000
+    networks:
+      - monitor-net
+
+  prometheus:
+    image: prom/prometheus:v2.35.0
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - /srv/config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      # - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    # command:
+      # - '--config.file=/etc/prometheus/prometheus.yml'
+      # - '--storage.tsdb.path=/prometheus'
+      # - '--web.console.libraries=/etc/prometheus/console_libraries'
+      # - '--web.console.templates=/etc/prometheus/consoles'
+      # - '--storage.tsdb.retention.time=200h'
+      # - '--web.enable-lifecycle'
+    ports:
+      - 9090:9090
+    networks:
+      - monitor-net
+
+  nodeexporter:
+    image: prom/node-exporter:v1.3.1
+    container_name: nodeexporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 9100:9100
+    networks:
+      - monitor-net
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /cgroup:/cgroup:ro
+    ports:
+      - 8080:8080
+    networks:
+      - monitor-net
+
+  influxdb:
+    image: influxdb:2.2-alpine
+    container_name: influxdb2
+    restart: unless-stopped
+    volumes:
+      - influxdb2_data:/var/lib/influxdb2
+      - /etc/influxdb2:/etc/influxdb2
+      # - /etc/ssl/cert.pem/:/etc/ssl/cert.pem
+      # - /etc/ssl/cert-key.pem/:/etc/ssl/cert-key.pem
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${ADMIN_USER}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${ADMIN_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${DB_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${DB_NAME}
+    #  - DOCKER_INFLUXDB_INIT_RETENTION=1w
+    #  - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-auth-token
+    # command: influxd --tls-cert=/etc/ssl/cert.pem --tls-key=/etc/ssl/cert-key.pem
+    ports:
+      - 8086:8086
+    networks:
+      - monitor-net
