@@ -1,0 +1,47 @@
+version: '3.9'
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.55.0.0/16
+          gateway: 10.55.0.1
+
+volumes:
+  page_data:
+  mariadb_data:
+  mariadb_config_data:
+
+services:
+  apache:
+    image: php:8-apache
+    restart: unless-stopped
+    ports:
+      - 8085:80
+    volumes:
+      - page_data:/var/www/html
+    networks:
+      default:
+        ipv4_address: 10.55.0.5
+    depends:
+      - mariadb
+
+  mariadb:
+    # image: mariadb:10.7.3
+    build: .
+    container_name: mariadb_vrify_db
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - mariadb_config_data:/etc/mysql
+    environment:
+      TZ: CET
+      MYSQL_ROOT_PASSWORD: ${ROOT_PW}
+      MYSQL_USER: ${ADMIN_NAME}
+      MYSQL_PASSWORD: ${ADMIN_PW}
+    networks:
+      default:
+        ipv4_address: 10.55.0.6

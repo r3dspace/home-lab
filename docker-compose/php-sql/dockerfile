@@ -1,0 +1,5 @@
+FROM php:8-apache
+
+LABEL maintainer="Maintainer mr.red@spicydragon.net"
+
+RUN docker-php-ext-install mysqli
