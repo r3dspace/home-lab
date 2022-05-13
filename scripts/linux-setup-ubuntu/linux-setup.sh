@@ -97,4 +97,4 @@ echo "systemctl start qemu-guest-agent"
 echo "============================================================="
 echo ""
 
-sudo shutdown 2
+sudo shutdown 3
