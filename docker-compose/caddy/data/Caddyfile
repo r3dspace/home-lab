@@ -1,0 +1,13 @@
+(secheaders) {
+    header {
+        Permissions-Policy interest-cohort=()
+        X-Content-Type-Options nosniff
+        Referrer-Policy no-referrer-when-downgrade
+    }
+}
+
+# Webpage beispiel
+# beispiel.com {
+#     import secheaders
+#     reverse_proxy 127.0.0.1:8080
+# }

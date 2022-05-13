@@ -1,0 +1,18 @@
+version: '3.9'
+
+volumes:
+  caddy_data:
+    external: true    # Check
+  caddy_config:
+
+services:
+  caddy:
+    image: caddy:2.5.1-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
