@@ -15,7 +15,8 @@ volumes:
 
 services:
   apache:
-    image: php:8-apache
+    # image: php:8-apache
+    build: .
     restart: unless-stopped
     ports:
       - 8085:80
@@ -28,8 +29,7 @@ services:
       - mariadb
 
   mariadb:
-    # image: mariadb:10.7.3
-    build: .
+    image: mariadb:10.7.3
     container_name: mariadb_vrify_db
     restart: unless-stopped
     ports:
