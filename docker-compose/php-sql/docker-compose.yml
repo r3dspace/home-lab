@@ -40,7 +40,7 @@ services:
     environment:
       TZ: CET
       MYSQL_ROOT_PASSWORD: ${ROOT_PW}
-      MYSQL_USER: ${ADMIN_NAME}
+      MYSQL_USER: ${ADMIN_USER}
       MYSQL_PASSWORD: ${ADMIN_PW}
     networks:
       default:
