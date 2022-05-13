@@ -17,6 +17,7 @@ services:
   apache:
     # image: php:8-apache
     build: .
+    container_name: php-apache
     restart: unless-stopped
     ports:
       - 8085:80
@@ -30,7 +31,7 @@ services:
 
   mariadb:
     image: mariadb:10.7.3
-    container_name: mariadb_vrify_db
+    container_name: mariadb
     restart: unless-stopped
     ports:
       - 3306:3306
