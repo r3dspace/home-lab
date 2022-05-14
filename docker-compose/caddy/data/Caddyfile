@@ -1,13 +1,57 @@
-(secheaders) {
-    header {
-        Permissions-Policy interest-cohort=()
-        X-Content-Type-Options nosniff
-        Referrer-Policy no-referrer-when-downgrade
-    }
+##
+# Global server settings
+##
+{
+        # // API admin interface
+        # Only allow public IPs with token over origins and enforce_origins
+        # This example only allows modifications over the localhost
+        admin 127.0.0.1:2019
+
+        # // Server settings
+        # General Caddy server settings
+        # If some services do not load correctly disbale http3
+        servers :443 {
+                protocol {
+                        experimental_http3
+                }
+        }
+        
+        # // Logging of caddy service
+        # Basic error logging
+        log {
+                output file caddy-log {
+                        roll_size 200
+                        roll_local_time
+                        roll_keep 20
+                        roll_keep_for 90
+                }
+                level ERROR
+        }
 }
 
-# Webpage beispiel
-# beispiel.com {
-#     import secheaders
-#     reverse_proxy 127.0.0.1:8080
+##
+# Class settings
+##
+# // Security headers
+# Basic security header settings
+(secheaders) {
+        header {
+                Permissions-Policy interest-cohort=()
+                X-Content-Type-Options nosniff
+                Referrer-Policy no-referrer-when-downgrade
+        }
+}
+
+##
+# Main redirections
+##
+# // Webpage example
+# example.com {
+#         import secheaders
+#         reverse_proxy 127.0.0.1:8080
+# }
+
+# // Redirect discord example
+# dc.example.com {
+#         redir https://discord.gg/1234aBc
 # }
