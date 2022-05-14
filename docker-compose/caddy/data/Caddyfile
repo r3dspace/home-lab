@@ -20,10 +20,10 @@
         # Basic error logging
         log {
                 output file caddy-log {
-                        roll_size 200
+                        roll_size 200MiB
                         roll_local_time
                         roll_keep 20
-                        roll_keep_for 90
+                        roll_keep_for 2160h
                 }
                 level ERROR
         }
