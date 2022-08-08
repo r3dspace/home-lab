@@ -37,7 +37,7 @@ services:
       TZ: CET
 
   wordpress:
-    image: wordpress:latest
+    image: wordpress:php8.1-fpm-alpine
     container_name: wordpress_app_$NAME
     restart: unless-stopped
     depends_on:
