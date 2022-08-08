@@ -1,7 +1,7 @@
 version: '3.9'
 
 volumes:
-  uptime_data:
+  data: {}
 
 services:
   uptime:
@@ -9,7 +9,6 @@ services:
     container_name: uptime-kuma
     restart: unless-stopped
     volumes:
-      - uptime_data:/app/data
+      - data:/app/data
     ports:
       - 3001:3001
-

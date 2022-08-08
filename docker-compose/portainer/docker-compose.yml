@@ -1,18 +1,21 @@
 version: '3.9'
 
 volumes:
-  portainer_data:
+  data: {}
 
 services:
   portainer:
-    image: portainer/portainer-ce:latest
+    image: portainer/portainer-ce:latest    # Image for community edition
+    # image: portainer/portainer-ee:latest  # Image for enterprise
     container_name: portianer
     restart: unless-stopped
     volumes:
+      - data:/data
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
     ports:
-      - 9000:9000
-      - 9443:9443
-      - 8000:8000
+      - 9443:9443/tcp
+      - 8000:8000/tcp
+      - 8000:8000/udp
+    environment:
+      # - EDGE_INSECURE_POLL: 1     # Needed when using self signed cert with edge agent
