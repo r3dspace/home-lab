@@ -9,11 +9,11 @@ Install via apt:
 sudo apt update && sudo apt upgrade
 sudo apt install -y \
     docker.io \
-    docker-compose
+    docker compose
 ```
 
 Test the installation of Docker & Docker-Compose:
 ```bash
 docker version
-docker-compose version
+docker compose version
 ```
