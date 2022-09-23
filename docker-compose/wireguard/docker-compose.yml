@@ -1,0 +1,36 @@
+version: "3.9"
+
+networks:
+  wg:
+    external:
+      name: wireguard_network
+
+services:
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - SERVERURL=auto   # Seting server in the client config. 'auto' uses the host
+      - SERVERPORT=51820
+      - PEERS=user1,user2,site1   # Set WG configs for c2s
+      - PEERDNS=auto   # Set dns provider for clients. 'auto' uses the host
+      - INTERNAL_SUBNET=10.13.13.0  # Tunnel subnet
+      - ALLOWEDIPS=10.13.13.1/32,10.200.10.0/24  # Allowed IPs for clients. Calculator tool: https://bit.ly/3xOZP1b
+      - LOG_CONFS=true   # Creates QR-config-code
+    volumes:
+      - /opt/docker/volumes/wireguard/config:/config
+      - /lib/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      wg:
+        ipv4_address: 172.155.5.250   # Set container IP in 'wireguard_network' make sure these match with your network!
