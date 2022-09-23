@@ -1,18 +1,27 @@
-version: '3.9'
+version: "3.9"
 
 volumes:
-  caddy_data:
-    external: true    # Check
-  caddy_config:
+  data:
+  config:
+
+networks:
+  proxy:
+    external:
+      name: caddy_proxy
 
 services:
   caddy:
-    image: caddy:2.5.1-alpine
+    image: .
+    container_name: xcaddy
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
+      - "443:443/udp"
     volumes:
       - /etc/caddy/Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
+      # - /etc/caddy/site:/srv  # Optional
+      - data:/data
+      - config:/config
+    networks:
+      proxy:

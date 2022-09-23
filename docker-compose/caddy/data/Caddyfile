@@ -1,39 +1,19 @@
+#========================================================================================#
 ##
-# Global server settings
+# Global settings
 ##
 {
-        # // API admin interface
-        # Only allow public IPs with token over origins and enforce_origins
-        # This example only allows modifications over the localhost
-        admin 127.0.0.1:2019
-
-        # // Server settings
-        # General Caddy server settings
-        # If some services do not load correctly disbale http3
-        servers :443 {
+        servers {
                 protocol {
                         experimental_http3
+                        strict_sni_host
                 }
-        }
-        
-        # // Logging of caddy service
-        # Basic error logging
-        log {
-                output file caddy-log {
-                        roll_size 200MiB
-                        roll_local_time
-                        roll_keep 20
-                        roll_keep_for 2160h
-                }
-                level ERROR
         }
 }
-
+#========================================================================================#
 ##
-# Class settings
+# Classes
 ##
-# // Security headers
-# Basic security header settings
 (secheaders) {
         header {
                 Permissions-Policy interest-cohort=()
@@ -41,17 +21,35 @@
                 Referrer-Policy no-referrer-when-downgrade
         }
 }
+#========================================================================================#
+##
+# Root-Domain
+##
+example.com {
+        tls {
+                dns cloudflare 8MV2dPUqC5cUDLE9ezFzCxL73DQKSlo6fA33x0uf
+        }
+        redir https://example.com
+}
 
 ##
-# Main redirections
+# Sub-Domains
 ##
-# // Webpage example
-# example.com {
-#         import secheaders
-#         reverse_proxy 127.0.0.1:8080
-# }
+*.example.com {
+        tls {
+                dns cloudflare 8MV2dPUqC5cUDLE9ezFzCxL73DQKSlo6fA33x0uf
+        }
 
-# // Redirect discord example
-# dc.example.com {
-#         redir https://discord.gg/1234aBc
-# }
+        # Testing
+        @testing host testing.example.com
+        handle @testing {
+                import secheaders  # Imports above defined security headers
+                rever_proxy localhost:8080
+        }
+
+        # Fallback
+        handle {
+                redir https://example.com/404
+        }
+}
+#========================================================================================#
