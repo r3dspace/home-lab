@@ -15,6 +15,7 @@ then
 fi
 
 # General info of script
+# ---
 clear
 echo "\033[36m
 # Use this script when continuing to use the default

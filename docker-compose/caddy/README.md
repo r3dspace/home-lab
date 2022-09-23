@@ -8,6 +8,7 @@ Caddy runs great in containers because it has no dependencies—not even libc. R
 ## Setup / use
 1. Clone the repo
 2. Navigate into this directory
-3. Run the script `caddy-dependensies.sh`, only if when ceaping the default values in the `docker-compose.yml` file
-4. Change the default values of the `/etc/caddy/Caddyfile` to your needed values
-5. Start the container `docker compose up -d`
+3. Make the scrip executable `chmod +x caddy-dependensies.sh`
+4. Run the script `caddy-dependensies.sh`, only when keeping the default values in the `docker-compose.yml` file
+5. Change the default values of the `/etc/caddy/Caddyfile` to your needed values
+6. Start the container `docker compose up -d`
