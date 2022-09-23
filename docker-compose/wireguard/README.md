@@ -32,7 +32,9 @@ sudo docker compose up -d
 **---**
 
 ## Setup (Script)
-Setup a WG (Wireguard) Docker container using a script.
+Setup a WG (Wireguard) Docker container using a script.</br>
+This script will create and place the WG dir. into /opt/docker,
+as well as create the docker network for you.
 
 
 **---**
@@ -67,3 +69,5 @@ Make script executable and run it:
 sudo chmod +x show-qr-in-cli.sh
 sudo sh show-qr-in-cli.sh
 ```
+
+**---**
