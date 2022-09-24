@@ -16,7 +16,7 @@ services:
       - ${HOST_IP}:8080:80/tcp           # Change variable to 127.0.0.1 if you want to use rev. proxy on the host
     dns:
       - 127.0.0.1
-      - 1.1.1.1
+      - 9.9.9.9
     volumes:
       - data:/etc/pihole
       - dnsmasq:/etc/dnsmasq.d
@@ -26,6 +26,6 @@ services:
     environment:
       ServerIP: ${HOST_IP}
       TZ: 'Europe/Berlin'
-      DNS1: 1.1.1.1
-      DNS2: 9.9.9.9
+      DNS1: 9.9.9.9
+      DNS2: 1.1.1.1
       WEBPASSWORD: ${WEB_PW}
