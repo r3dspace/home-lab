@@ -1,6 +1,7 @@
 #!/bin/bash
 # ---
 # Script will display selected QR-code in CLI.
+# By r3dspace
 # ---
 
 # Root check
@@ -12,6 +13,7 @@ then
 fi
 
 # Select and print QR-code
+# ---
 echo "Input Wireguard container name: "
 read wg_container
 echo "Input Wireguard peer name: "

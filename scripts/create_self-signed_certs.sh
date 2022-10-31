@@ -1,5 +1,6 @@
 # Create a self-signed cert and key pem file
-# By Mr.Red
+# By r3dspace
+# ---
 
 read -r -p "Do you want to add a password on the private key? [y/N] " qdes
 qdes=${qdes:-N}
