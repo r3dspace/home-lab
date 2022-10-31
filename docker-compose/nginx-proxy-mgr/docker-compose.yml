@@ -1,5 +1,10 @@
 version: '3.9'
 
+volumes:
+  data_app: {}
+  data_db: {}
+  data_certs: {}
+
 services:
   app:
     image: jc21/nginx-proxy-manager:latest
@@ -12,9 +17,9 @@ services:
     environment:
       DB_MYSQL_HOST: "mariadb"
       DB_MYSQL_PORT: 3306
-      DB_MYSQL_USER: $DB-USER
-      DB_MYSQL_PASSWORD: $DB-USER-PW
-      DB_MYSQL_NAME: $DB-NAME
+      DB_MYSQL_USER: ${DB_USER}
+      DB_MYSQL_PASSWORD: ${DB_USER_PW}
+      DB_MYSQL_NAME: ${DB_NAME}
     volumes:
       - data_app:/data
       - data_certs:/etc/letsencrypt
@@ -24,14 +29,9 @@ services:
     container_name: nginx-proxy-mgr_db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: $DB-ROOT-PW
-      MYSQL_DATABASE: $DB-NAME
-      MYSQL_USER: $DB-USER
-      MYSQL_PASSWORD: $DB-USER-PW
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PW}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_USER_PW}
     volumes:
       - data_db:/var/lib/mysql
-
-volumes:
-  data_app:
-  data_db:
-  data_certs:
