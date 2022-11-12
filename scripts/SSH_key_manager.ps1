@@ -40,7 +40,7 @@ function Get-mainMenuVis {
     Write-Host "Version: 1.0.0" -ForegroundColor DarkCyan
     Write-Host ""
     Write-Host "1. Generate generic ssh keys"
-    Write-Host "2. Generate GitHub ssh keys (comming soon)"
+    Write-Host "2. Generate GitHub ssh keys"
     Write-Host "3. Upload public key to host"
     Write-Host "4. Change private key password"
     Write-Host ""
@@ -54,23 +54,21 @@ function Get-mainMenu {
     cls
     Get-mainMenuVis
 
-    while (($input = Read-Host "Choose an option") -notmatch "1|2|3|4|^Q$") {
+    while (($input = Read-Host "Choose an option") -notmatch "^1$|^2$|^3$|^4$|^Q$") {
         Write-Host "Input not recognised" -ForegroundColor Red
+        Start-Sleep -Milliseconds 1300
+        Get-mainMenu
     }
     if ($input -match "[qQ]") {
         exit
     } elseif ($input -eq 1) {
         Get-sshKeyGen
     } elseif ($input -eq 2) {
-        Write-Host "Feature comming soon" -ForegroundColor Yellow
-        Start-Sleep -Milliseconds 850
-        Get-mainMenu
+        Get-sshGitKey
     } elseif ($input -eq 3) {
         Get-sshKeyUpl
     } elseif ($input -eq 4) {
-        Write-Host "Feature comming soon" -ForegroundColor Yellow
-        Start-Sleep -Milliseconds 850
-        Get-mainMenu
+        Get-sshKeyPW
     } else {
         Write-Host "Error" -ForegroundColor Red
     }
@@ -88,6 +86,9 @@ function Get-sshKeyGen {
 
     if ($keyName -eq "" -and $keyName -eq [String]::Empty) {
         $keyName = "id_rsa"
+    }
+    if ($keyPW -eq "" -and $keyPW -eq [String]::Empty) {
+        $keyPW = '""'
     }
     if ($folder -eq "" -and $folder -eq [String]::Empty) {
         $folder = "$env:USERPROFILE\.ssh"
@@ -110,16 +111,76 @@ function Get-sshKeyGen {
 
     # Generating ssh key pair
     # ---
-    if ($keyPW -eq "" -and $keyPW -eq [String]::Empty) {
-        ssh-keygen -b 4096 -f "$folder\$keyName"
+    ssh-keygen -f $folder\$keyName -t rsa -N $keyPW -b 4096
+
+    # Double check if ssh keys where generated
+    # ---
+    if (Test-Path -Path $folder\$keyName -PathType Leaf) {
+        Write-Host ""
+        Write-Host "Creation completed" -ForegroundColor Green
+        Start-Sleep -Milliseconds 3
+        Get-mainMenu
     } else {
-        ssh-keygen -b 4096 -f "$folder\$keyName" -N $keyPW
+        Write-Host "Error! Unable to locat ssh keys, after creation"
+        Pause
+        Get-mainMenu
+    }
+}
+
+# Generate GitHub compatible ssh keys
+# ---
+function Get-sshGitKey {
+    cls
+    Write-Host "# Creating a GitHub compatible ssh key pair" -ForegroundColor Cyan
+    Write-Host "# ---" -ForegroundColor Cyan
+    $keyName = Read-Host "Key name (default id_rsa)"
+    $keyPW = Read-Host "Key password (leave empty for no password)"
+    $gitMail = Read-Host "GitHub mail (required)"
+    $folder = Read-Host "Key location (default C:\Users\USERNAME\.ssh)"
+
+
+    if ($keyName -eq "" -and $keyName -eq [String]::Empty) {
+        $keyName = "id_rsa"
+    }
+    if ($keyPW -eq "" -and $keyPW -eq [String]::Empty) {
+        $keyPW = '""'
+    }
+    if ($folder -eq "" -and $folder -eq [String]::Empty) {
+        $folder = "$env:USERPROFILE\.ssh"
     }
 
-    Write-Host ""
-    Write-Host "Creation completed" -ForegroundColor Green
-    Start-Sleep -Milliseconds 850
-    Get-mainMenu
+    # Check input data, before generating ssh key pair
+    # ---
+    Write-Host "# Upload summary" -ForegroundColor Cyan
+    Write-Host "# ---" -ForegroundColor Cyan
+    Write-Host "Key name: $keyName" -ForegroundColor Magenta
+    Write-Host "Key password: $keyPW" -ForegroundColor Magenta
+    Write-Host "GitHub: $gitMail" -ForegroundColor Magenta
+    Write-Host "Key location: $folder" -ForegroundColor Magenta
+
+    while (($input = Read-Host "Is the data above correct? [y/n]") -notmatch "^Y$|^N$") {
+        Write-Host "Input not recognised" -ForegroundColor Red
+    }
+    if ($input -match "[nN]") {
+        Get-mainMenu
+    }
+
+    # Create GitHub compatible ssh key pair
+    # ---
+    ssh-keygen -f $folder\$keyName -t rsa -N $keyPW -b 4096 -C $gitMail
+
+    # Double check if ssh keys where generated
+    # ---
+    if (Test-Path -Path $folder\$keyName -PathType Leaf) {
+        Write-Host ""
+        Write-Host "Creation completed" -ForegroundColor Green
+        Start-Sleep -Milliseconds 3
+        Get-mainMenu
+    } else {
+        Write-Host "Error! Unable to locat ssh keys, after creation"
+        Pause
+        Get-mainMenu
+    }
 }
 
 # Uploads .pub file to target using scp
@@ -170,7 +231,7 @@ function Get-sshKeyUpl {
 
     Write-Host ""
     Write-Host "Upload completed" -ForegroundColor Green
-    Start-Sleep -Milliseconds 850
+    Start-Sleep -Milliseconds 3
     Get-mainMenu
 }
 
@@ -210,7 +271,7 @@ function Get-sshKeyPW {
 
     Write-Host ""
     Write-Host "Convertion completed" -ForegroundColor Green
-    Start-Sleep -Milliseconds 850
+    Start-Sleep -Milliseconds 3
     Get-mainMenu
 }
 
