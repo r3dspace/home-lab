@@ -37,7 +37,7 @@ function Get-mainMenuVis {
     Write-Host "|___/___/_||_| |_|\_\___|\_, / |_|_|_\__,_|_||_\__,_\__, \___|_|  " -ForegroundColor Cyan
     Write-Host "                         |__/                       |___/             " -ForegroundColor Cyan
     Write-Host "By r3dspace" -ForegroundColor DarkCyan
-    Write-Host "Version: 1.0.0" -ForegroundColor DarkCyan
+    Write-Host "Version: 1.0.2" -ForegroundColor DarkCyan
     Write-Host ""
     Write-Host "1. Generate generic ssh keys"
     Write-Host "2. Generate GitHub ssh keys"
@@ -118,7 +118,7 @@ function Get-sshKeyGen {
     if (Test-Path -Path $folder\$keyName -PathType Leaf) {
         Write-Host ""
         Write-Host "Creation completed" -ForegroundColor Green
-        Start-Sleep -Milliseconds 3
+        Start-Sleep 2
         Get-mainMenu
     } else {
         Write-Host "Error! Unable to locat ssh keys, after creation"
@@ -174,7 +174,7 @@ function Get-sshGitKey {
     if (Test-Path -Path $folder\$keyName -PathType Leaf) {
         Write-Host ""
         Write-Host "Creation completed" -ForegroundColor Green
-        Start-Sleep -Milliseconds 3
+        Start-Sleep 2
         Get-mainMenu
     } else {
         Write-Host "Error! Unable to locat ssh keys, after creation"
@@ -231,7 +231,7 @@ function Get-sshKeyUpl {
 
     Write-Host ""
     Write-Host "Upload completed" -ForegroundColor Green
-    Start-Sleep -Milliseconds 3
+    Start-Sleep 2
     Get-mainMenu
 }
 
@@ -271,7 +271,7 @@ function Get-sshKeyPW {
 
     Write-Host ""
     Write-Host "Convertion completed" -ForegroundColor Green
-    Start-Sleep -Milliseconds 3
+    Start-Sleep 2
     Get-mainMenu
 }
 
