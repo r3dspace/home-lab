@@ -73,3 +73,4 @@ services:
       REDIS_HOST_PASSWORD: ${REDIS_PW}
       NEXTCLOUD_TRUSTED_DOMAINS: ${HOSTNAME}
       TRUSTED_PROXIES: "*"
+      
