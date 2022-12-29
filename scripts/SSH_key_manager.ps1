@@ -27,7 +27,7 @@ if (Test-Path -Path $folder) {
     }
 }
 
-# Main menu Visuals
+# Main menu visuals
 # ---
 function Get-mainMenuVis {
     cls
@@ -37,7 +37,7 @@ function Get-mainMenuVis {
     Write-Host "|___/___/_||_| |_|\_\___|\_, / |_|_|_\__,_|_||_\__,_\__, \___|_|  " -ForegroundColor Cyan
     Write-Host "                         |__/                       |___/             " -ForegroundColor Cyan
     Write-Host "By r3dspace" -ForegroundColor DarkCyan
-    Write-Host "Version: 1.0.2" -ForegroundColor DarkCyan
+    Write-Host "Version: 1.1.0" -ForegroundColor DarkCyan
     Write-Host ""
     Write-Host "1. Generate generic ssh keys"
     Write-Host "2. Generate GitHub ssh keys"
@@ -74,18 +74,60 @@ function Get-mainMenu {
     }
 }
 
+
+# Key type menu visuals
+# ---
+function Get-keyTypeVis {
+    Write-Host "Authentication key type list:"
+    Write-Host "   1. RSA"
+    Write-Host "   2. Ed25519 (default)"
+    Write-Host "   3. FIDO/U2F" -ForegroundColor Black
+}
+
+# Key type menu
+# ---
+function Get-keyType {
+    cls
+    Get-keyTypeVis
+
+    while (($input = Read-Host "Choose an option") -notmatch "^1$|^2$|^3$|$_") {
+        Write-Host "Input not recognised" -ForegroundColor Red
+        Start-Sleep -Milliseconds 1300
+        Get-keyType
+    }
+    if ($input -eq "" -and $input -eq [String]::Empty) {
+        $keyType = "id_ed25519"
+    } elseif ($input -eq 1) {
+        $keyType = "id_rsa"
+    } elseif ($input -eq 2) {
+        $keyType = "id_ed25519"
+    } elseif ($input -eq 3) {
+        Write-Host "Feature comming soon!" -ForegroundColor Yellow
+        Start-Sleep -Milliseconds 1300
+        Get-KeyType
+        # $keyType = "fido/u2f"
+    } else {
+        Write-Host "Error" -ForegroundColor Red
+    }
+    Write-Host "$keyType"
+ }
+
+
 # Generate ssh key pair
 # ---
 function Get-sshKeyGen {
     cls
-    Write-Host "# Creating a ssh key pair" -ForegroundColor Cyan
-    Write-Host "# ---" -ForegroundColor Cyan
-    $keyName = Read-Host "Key name (default id_rsa)"
+    function Get-sshKeyGenHeader {
+        Write-Host "# Creating a ssh key pair" -ForegroundColor Cyan
+        Write-Host "# ---" -ForegroundColor Cyan    
+    }
+    Get-keyType # need to pass header in to keyType function
+    $keyName = Read-Host "Key name (default $keyType)"
     $keyPW = Read-Host "Key password (leave empty for no password)"
     $folder = Read-Host "Key location (default C:\Users\USERNAME\.ssh)"
 
     if ($keyName -eq "" -and $keyName -eq [String]::Empty) {
-        $keyName = "id_rsa"
+        $keyName = "id_ed25519"
     }
     if ($keyPW -eq "" -and $keyPW -eq [String]::Empty) {
         $keyPW = '""'
@@ -111,7 +153,8 @@ function Get-sshKeyGen {
 
     # Generating ssh key pair
     # ---
-    ssh-keygen -f $folder\$keyName -t rsa -N $keyPW -b 4096
+    # ssh-keygen -f $folder\$keyName -t ed25519 -a 100
+    ssh-keygen -f $folder\$keyName -t rsa -N $keyPW -b 8192
 
     # Double check if ssh keys where generated
     # ---
