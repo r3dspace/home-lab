@@ -4,24 +4,15 @@ volumes:
   data:
   config:
 
-networks:
-  proxy:
-    external:
-      name: caddy_proxy
-
 services:
   caddy:
     build: .
+    pull_policy: build
     container_name: xcaddy
     restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"  # http3
     volumes:
       - /etc/caddy/Caddyfile:/etc/caddy/Caddyfile
       # - /etc/caddy/site:/srv  # Optional
       - data:/data
       - config:/config
-    networks:
-      proxy:
+    network_mode: "host"
