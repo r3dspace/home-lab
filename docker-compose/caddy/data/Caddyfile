@@ -14,11 +14,29 @@
 ##
 # Classes
 ##
+(full-frames) {
+        encode {
+                gzip 4
+                zstd
+        }
+        header {
+                Permissions-Policy interest-cohort=()
+                X-Content-Type-Options nosniff
+                X-Frame-Options SAMEORIGIN
+                Referrer-Policy no-referrer-when-downgrade
+                X-XSS-Protection "1; mode=block"
+                X-Download-Options noopen
+        }
+}
+
 (secheaders) {
         header {
                 Permissions-Policy interest-cohort=()
                 X-Content-Type-Options nosniff
+                X-Frame-Options SAMEORIGIN
                 Referrer-Policy no-referrer-when-downgrade
+                X-XSS-Protection "1; mode=block"
+                X-Download-Options noopen
         }
 }
 #========================================================================================#
@@ -44,7 +62,7 @@ example.com {
         @testing host testing.example.com
         handle @testing {
                 import secheaders  # Imports above defined security headers
-                rever_proxy localhost:8080
+                revers_proxy localhost:8080
         }
 
         # Fallback

@@ -11,8 +11,8 @@ services:
     container_name: xcaddy
     restart: unless-stopped
     volumes:
-      - /etc/caddy/Caddyfile:/etc/caddy/Caddyfile
-      # - /etc/caddy/site:/srv  # Optional
+      - /etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      # - /etc/caddy/site:/srv:ro  # Optional
       - data:/data
       - config:/config
     network_mode: "host"

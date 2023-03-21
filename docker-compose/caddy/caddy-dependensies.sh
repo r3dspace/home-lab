@@ -47,6 +47,7 @@ done
 if [ ! -d "/etc/caddy" ]
 then
     mkdir -p /etc/caddy
+    chmod -R 770 /etc/caddy
     if [ ! -d "/etc/caddy" ]
     then
         echo "💢 Error creating '/etc/caddy' directory!"
@@ -68,10 +69,10 @@ fi
 
 # Check for predefined docker network 'caddy_proxy'
 # ---
-if ! docker network ls | grep caddy_proxy > /dev/null
+if ! docker network ls | grep xcaddy_proxy > /dev/null
 then
-    docker network create -d bridge caddy_proxy
-    if ! docker network ls | grep caddy_proxy > /dev/null
+    docker network create -d bridge xcaddy_proxy
+    if ! docker network ls | grep xcaddy_proxy > /dev/null
     then
         echo "💢 Error creating docker network!"
     else
