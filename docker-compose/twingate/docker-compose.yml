@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  twingate-tunnel-1:
+    image: twingate/connector:1
+    container_name: twingate-tunnel-1
+    restart: unless-stopped
+    # sysctls: 
+      # - net.ipv4.ping_group_range=0 2147483647  # Not required when running in network_mode=host
+    environment:
+      TENANT_URL: "https://<CHANGE ME>.twingate.com"
+      TWINGATE_LABEL_HOSTNAME: "`hostname`"
+      REFRESH_TOKEN: ${REFRESH_TOKEN}
+      ACCESS_TOKEN: ${ACCESS_TOKEN}
+    network_mode: "host"

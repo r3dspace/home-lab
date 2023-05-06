@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflare-tunnel-host
+    restart: always
+    command: tunnel --no-autoupdate run --token ${CFZ_TOKEN}
+    network_mode: "host"

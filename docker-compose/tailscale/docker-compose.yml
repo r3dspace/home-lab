@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  tailscale-tunnel:
+    image: tailscale/tailscale:latest
+    container_name: tailscale-tunnel
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - /var/lib:/var/lib
+      - /dev/net/tun:/dev/net/tun 
+    environment:
+      TS_AUTHKEY: ${TS_AUTHKEY}
+    network_mode: "host"
