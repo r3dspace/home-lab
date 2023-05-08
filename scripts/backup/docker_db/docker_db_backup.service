@@ -1,0 +1,12 @@
+[Unit]
+Description=Triggering the docker_db_backup script
+Wants=docker_db_backup.timer docker.service
+
+[Service]
+Type=simple
+ExecStart=sh /etc/scripts/docker_db_backup.sh
+User=docker-backup
+RuntimeMaxSec=1200
+
+[Install]
+WantedBy=multi-user.target

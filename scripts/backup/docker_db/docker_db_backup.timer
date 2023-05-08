@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily trigger for docker_db_backup service
+
+[Timer]
+OnCalendar=*-*-* 4:00:00
+Persistent=true
+Unit=docker_db_backup.service
+
+[Install]
+WantedBy=timers.target
