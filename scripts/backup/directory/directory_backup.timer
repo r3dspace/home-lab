@@ -1,0 +1,10 @@
+[Unit]
+Description=Triggering the directory-backup.service
+
+[Timer]
+OnCalendar=*-*-* 4:30:00
+Persistent=true
+Unit=directory_backup.service
+
+[Install]
+WantedBy=timers.target

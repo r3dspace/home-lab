@@ -1,0 +1,12 @@
+[Unit]
+Description=Automatic backup of a directory
+Wants=directory_backup.timer network.target
+
+[Service]
+Type=simple
+ExecStart=sh /etc/scripts/directory_backup.sh
+User=dir-backup
+RuntimeMaxSec=1200
+
+[Install]
+WantedBy=multi-user.target
