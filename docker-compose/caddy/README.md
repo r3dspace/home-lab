@@ -1,6 +1,6 @@
 # xCaddy with Cloudfalre plugin
 
-## 💡 About Caddy
+### 💡 About Caddy
 
 Caddy simplifies your infrastructure. It takes care of TLS certificate renewals, OCSP stapling, static file serving, reverse proxying, Kubernetes ingress, and more.
 Its modular architecture means you can do more with a single, static binary that compiles for any platform.
@@ -9,7 +9,7 @@ Caddy runs great in containers because it has no dependencies—not even libc. R
 
 ---
 
-## ⚙️ Manual setup
+### ⚙️ Manual setup
 
 Create `caddy` directory & copy `Caddyfile` to that directory:
 
@@ -27,7 +27,7 @@ sudo chmod -R 770 /etc/caddy
 Run the docker compose file.
 
 
-## ⚙️ Script setup
+### ⚙️ Script setup
 
 *Note: Only run script when using defaukt `docker-compose.yml` file*
 
@@ -43,7 +43,7 @@ Run the docker compose file.
 
 ---
 
-## ⚠️ Warning
+### ⚠️ Warning
 
 Please beware that products can change over time. I do my best to keep up with the latest changes and releases, but please understand that this won’t always be the case.
 
