@@ -1,0 +1,35 @@
+version: "3.8"
+
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer
+
+services:
+  nextcloud:
+    image: nextcloud/all-in-one:latest
+    restart: always
+    container_name: nextcloud-aio-mastercontainer
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      # - 80:80
+      - 127.0.0.1:8083:8080
+      # - 8443:8443
+    environment:
+      - APACHE_PORT=11000
+      - APACHE_IP_BINDING=127.0.0.1
+      - COLLABORA_SECCOMP_DISABLED=false
+      - DISABLE_BACKUP_SECTION=false
+      - SKIP_DOMAIN_VALIDATION=true  # When running system in localhost context
+      # - NEXTCLOUD_DATADIR=/mnt/ncdata
+      # - NEXTCLOUD_MOUNT=/mnt/
+      - NEXTCLOUD_UPLOAD_LIMIT=20G
+      - NEXTCLOUD_MAX_TIME=3600
+      - NEXTCLOUD_MEMORY_LIMIT=1024M
+      # - NEXTCLOUD_TRUSTED_CACERTS_DIR=/path/to/my/cacerts
+      - NEXTCLOUD_STARTUP_APPS=deck twofactor_totp tasks calendar contacts
+      - NEXTCLOUD_ADDITIONAL_APKS=imagemagick
+      - NEXTCLOUD_ADDITIONAL_PHP_EXTENSIONS=imagick
+      # - NEXTCLOUD_ENABLE_DRI_DEVICE=true
+      # - TALK_PORT=3478
