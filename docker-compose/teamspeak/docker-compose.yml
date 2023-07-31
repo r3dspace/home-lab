@@ -1,0 +1,38 @@
+version: "3.9"
+
+volumes:
+  data_app:
+  data_db:
+
+services:
+  teamspeak_app:
+    image: teamspeak
+    container_name: teamspeak_app_spicydragon
+    restart: unless-stopped
+    volumes:
+      - data_app:/var/ts3server/
+    ports:
+      - 9987:9987/udp  # VoIP
+      - 10011:10011    # Server query
+      - 30033:30033    # Filetransfer
+    environment:
+      TS3SERVER_DB_PLUGIN: ts3db_mariadb
+      TS3SERVER_DB_SQLCREATEPATH: create_mariadb
+      TS3SERVER_DB_HOST: teamseapk_db
+      TS3SERVER_DB_USER: ${DB_USER}
+      TS3SERVER_DB_PASSWORD: ${DB_USER_PW}
+      TS3SERVER_DB_NAME: ts-spicydragon
+      TS3SERVER_DB_WAITUNTILREADY: 30
+      TS3SERVER_LICENSE: accept
+
+  teamseapk_db:
+    image: mariadb:10.6
+    container_name: teamspeak_db_spicydragon
+    restart: unless-stopped
+    volumes:
+      - data_db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PW}
+      MYSQL_DATABASE: ts-spicydragon
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_USER_PW}
