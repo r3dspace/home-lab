@@ -5,16 +5,16 @@ networks:
   backend:
 
 volumes:
-  nextcloud_data:
-  mariadb_data:
-  redis_data:
+  app_data:
+  db_data:
+  cache_data:
 
 services:
   mariadb:
-    image: mariadb:10.9
+    image: mariadb:10
     container_name: nextcloud_db_$NAME
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
     networks:
       - backend
     restart: unless-stopped
@@ -36,24 +36,23 @@ services:
     networks:
       - backend
     volumes:
-      - redis_data:/var/lib/redis
+      - cache_data:/var/lib/redis
 
   nextcloud:
     depends_on:
       - redis
       - mariadb
-    image: nextcloud:stable
+    image: nextcloud:latest
     container_name: nextcloud_app_$NAME
     restart: unless-stopped
     hostname: $HOSTNAME
     volumes:
-      - nextcloud_data:/var/www/html
-      - ./php.ini:/usr/local/etc/php/conf.d/zzz-custom.ini
+      - app_data:/var/www/html
+      # - ./php.ini:/usr/local/etc/php/conf.d/zzz-custom.ini
     ports:
       - 127.0.0.1:8081:80
     networks:
       - frontend
-      - backend
     environment:
       TZ: CET
       VIRTUAL_HOST: $HOSTNAME
@@ -73,4 +72,3 @@ services:
       REDIS_HOST_PASSWORD: ${REDIS_PW}
       NEXTCLOUD_TRUSTED_DOMAINS: ${HOSTNAME}
       TRUSTED_PROXIES: "*"
-      
